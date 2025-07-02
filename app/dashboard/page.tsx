@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Pagination, CircularProgress } from '@mui/material';
 import { fetchJobs, setCurrentPage } from '../../store/slices/jobsSlice';
 import { AppDispatch, RootState, useAppSelector } from '../../store';
@@ -56,13 +56,11 @@ const getFlagEmoji = (location: string) => {
 const Dashboard = () => {
   const router = useRouter();
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { 
     jobs, 
     totalPages, 
-    currentPage, 
-    hasNextPage, 
-    hasPreviousPage, 
+    currentPage,
     isLoading, 
     error 
   } = useAppSelector((state: RootState) => state.jobs);

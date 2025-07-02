@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import Image from "next/image";
-import { loginUser, clearError } from '../store/slices/authSlice';
+import { loginUser } from '../store/slices/authSlice';
 import { AppDispatch, RootState, useAppSelector } from '../store';
 
 
@@ -225,7 +225,7 @@ const LoginScreen = () => {
           />
           <div className="absolute inset-0 bg-black/20 flex items-end p-12">
             <blockquote className="text-white text-2xl font-medium leading-relaxed max-w-md">
-              "Here, you can find the right fit for your career or hire talent that fits your company's requirements."
+              {"Here, you can find the right fit for your career or hire talent that fits your company's requirements."}
             </blockquote>
           </div>
         </div>
