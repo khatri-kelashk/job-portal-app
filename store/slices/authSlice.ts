@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, LoginCredentials, AuthResponse } from '@/types/auth.types';
-import { authService } from '../services/authService';
-import { storage } from '@/utils/storage';
+import { authService } from '../../services/auth.service';
+import { storage } from '../../utils/storage';
 
 const initialState: AuthState = {
   user: null,
@@ -13,7 +13,7 @@ const initialState: AuthState = {
 
 // Async thunks
 export const loginUser = createAsyncThunk(
-  'auth/login',
+  '/users/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
@@ -25,9 +25,12 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+/**
+ * Logout user
+ */
 
 export const logoutUser = createAsyncThunk(
-  'auth/logout',
+  '/users/logout',
   async (_, { rejectWithValue }) => {
     try {
       await authService.logout();
@@ -39,8 +42,12 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+/**
+ * Check authentication status : Extra code
+ */
+
 export const checkAuthStatus = createAsyncThunk(
-  'auth/checkStatus',
+  '/users/checkStatus',
   async (_, { rejectWithValue }) => {
     try {
       const token = storage.getToken();
@@ -57,6 +64,10 @@ export const checkAuthStatus = createAsyncThunk(
   }
 );
 
+/**
+ * Auth slice
+ */
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -65,8 +76,8 @@ const authSlice = createSlice({
       state.error = null;
     },
     setUser: (state, action: PayloadAction<AuthResponse>) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.user = action?.payload?.data?.user;
+      state.token = action?.payload?.token;
       state.isAuthenticated = true;
     },
     clearAuth: (state) => {
@@ -85,14 +96,14 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = action?.payload?.data?.user;
+        state.token = action?.payload?.token;
         state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action?.payload as string;
       })
       // Logout cases
       .addCase(logoutUser.pending, (state) => {
@@ -107,7 +118,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action?.payload as string;
       })
       // Check auth status cases
       .addCase(checkAuthStatus.pending, (state) => {
@@ -115,8 +126,8 @@ const authSlice = createSlice({
       })
       .addCase(checkAuthStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = action?.payload?.user;
+        state.token = action?.payload?.token;
         state.isAuthenticated = true;
         state.error = null;
       })

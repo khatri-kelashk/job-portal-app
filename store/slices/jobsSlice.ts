@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { JobsState, JobsResponse } from '@/types/job.types';
-import { jobsService } from '@/services/jobs.service';
+import { JobsState, JobsResponse } from '../../types/job.types';
+import { jobsService } from '../../services/jobs.service';
 import { PaginationParams } from '@/types/api.types';
 
 const initialState: JobsState = {
@@ -35,13 +35,13 @@ const jobsSlice = createSlice({
       state.error = null;
     },
     setFilters: (state, action: PayloadAction<JobsState['filters']>) => {
-      state.filters = { ...state.filters, ...action.payload };
+      state.filters = { ...state.filters, ...action?.payload };
     },
     clearFilters: (state) => {
       state.filters = {};
     },
     setCurrentPage: (state, action: PayloadAction<number>) => {
-      state.currentPage = action.payload;
+      state.currentPage = action?.payload;
     },
   },
   extraReducers: (builder) => {
@@ -52,17 +52,17 @@ const jobsSlice = createSlice({
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.jobs = action.payload.jobs;
-        state.totalCount = action.payload.totalCount;
-        state.currentPage = action.payload.currentPage;
-        state.totalPages = action.payload.totalPages;
-        state.hasNextPage = action.payload.hasNextPage;
-        state.hasPreviousPage = action.payload.hasPreviousPage;
+        state.jobs = action?.payload?.data?.jobs;
+        state.totalCount = action?.payload?.totalCount ?? action?.payload?.data?.jobs?.length;
+        state.currentPage = action?.payload?.currentPage ?? 0;
+        state.totalPages = action?.payload?.totalPages ?? 0;
+        state.hasNextPage = action?.payload?.hasNextPage ?? false;
+        state.hasPreviousPage = action?.payload?.hasPreviousPage ?? false;
         state.error = null;
       })
       .addCase(fetchJobs.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action?.payload as string;
       });
   },
 });
