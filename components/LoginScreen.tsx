@@ -25,7 +25,7 @@ const LoginScreen = () => {
   const [toast, setToast] = useState<ToastState>({ show: false, title: '', description: '', variant: 'success' });
   
   
-  const { isLoading, error, isAuthenticated } = useAppSelector((state: RootState) => state.auth);
+  const { isLoading, error, isAuthenticated,  } = useAppSelector((state: RootState) => state.auth);
 
   const showToast = (title: string, description: string, variant: 'success' | 'error' = 'success') => {
     setToast({ show: true, title, description, variant });
@@ -48,16 +48,14 @@ const LoginScreen = () => {
     }
 
     // const response = await useAppDispatch()(loginUser({ email, password }));
-    const response = await dispatch((loginUser({ username:email, password }))).unwrap();
-    console.log("Login response:", response);
-    
-    
-    // Simulate API call
-    // setTimeout(() => {
-    //   setIsLoading(false);
+    /*const response =*/ await dispatch((loginUser({ username:email, password }))).unwrap();
+    // console.log("Login response:", response);
+    // if (response.status === 'success') {
     //   showToast("Success", "Logged in successfully!", "success");
-    //   onLogin();
-    // }, 1500);
+    //   // router.push('/dashboard');
+    // } else {
+    //   showToast("Error", response.message, "error");
+    // }
   };
   
 

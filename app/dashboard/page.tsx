@@ -5,9 +5,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { Pagination, CircularProgress } from '@mui/material';
-import { fetchJobs, setCurrentPage } from '../../store/slices/jobsSlice';
 import { AppDispatch, RootState, useAppSelector } from '../../store';
+import { fetchJobs, setCurrentPage } from '../../store/slices/jobsSlice';
+import { logoutUser } from '../../store/slices/authSlice';
 import { Job, JobsState } from '../../types/job.types';
+import { PaginationParams } from '../../types/api.types';
+import { formatRelativeTime } from '../../utils/helpers';
 
 // SVG Icons as components
 const BookmarkIcon = () => (
@@ -32,15 +35,15 @@ const HomeIcon = () => (
 // Company logo mapping
 const getCompanyLogo = (id: string) => {
   if (Number(id) % 2 === 0) {
-    return `images/2.png`;
+    return `/images/2.png`;
   } else if (Number(id) % 3 === 0) {
-    return `images/3.png`;
+    return `/images/3.png`;
   } else if (Number(id) % 5 === 0) {
-    return `images/5.png`;
+    return `/images/5.png`;
   } else if (Number(id) % 7 === 0) {
-    return `images/7.png`;
+    return `/images/7.png`;
   }
-  else return 'images/2.png';
+  else return '/images/2.png';
 };
 
 // Flag mapping for countries
@@ -80,7 +83,7 @@ const Dashboard = () => {
 
   const fetchJobsWithFilters = useCallback(
     (filters?: JobsState['filters']) => {
-      dispatch((fetchJobs({ page: currentPage, limit: 10, filters }) as any)).unwrap();
+      dispatch((fetchJobs({ page: currentPage, limit: 10, filters }  as PaginationParams & { filters?: JobsState['filters'] }))).unwrap();
     },
     [dispatch, currentPage]
   );
@@ -95,7 +98,8 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     // Handle logout logic here
-    console.log('Logout clicked');
+    dispatch(logoutUser());
+
   };
 
   const handleJobClick = (jobId: string) => {
@@ -106,7 +110,6 @@ const Dashboard = () => {
   const handleBookmark = (jobId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     // Handle bookmark logic
-    console.log('Bookmark clicked:', jobId);
   };
 
   if (isLoading) {
@@ -146,7 +149,7 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <h1 className="text-2xl font-semibold text-blue-900">Job Portal</h1>
-            <button 
+            <button
               onClick={handleLogout}
               className="text-blue-600 hover:text-blue-800 font-medium"
             >
@@ -159,8 +162,10 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-xl font-medium text-gray-900 mb-6">Available jobs</h2>
-          
+          <h2 className="text-xl font-medium text-gray-900 mb-6">
+            Available jobs
+          </h2>
+
           {/* Jobs List */}
           <div className="space-y-4">
             {jobs?.map((job: Job) => (
@@ -183,14 +188,20 @@ const Dashboard = () => {
                           onError={(e) => {
                             // Fallback to colored background with company initial
                             const target = e.target as HTMLElement;
-                            target.style.display = 'none';
+                            target.style.display = "none";
                             const parent = target.parentElement;
                             if (parent) {
                               parent.innerHTML = `<span class="text-white font-semibold text-lg">${job.organization}</span>`;
-                              parent.className += getCompanyLogo(job.id) === 'images/2.png' ? ' bg-red-500' :
-                                                getCompanyLogo(job.id) === 'images/3.png' ? ' bg-blue-500' :
-                                                getCompanyLogo(job.id) === 'images/5.png' ? ' bg-green-500' :
-                                                getCompanyLogo(job.id) === 'images/7.png' ? ' bg-gray-800' : ' bg-gray-400';
+                              parent.className +=
+                                getCompanyLogo(job.id) === "/images/2.png"
+                                  ? " bg-red-500"
+                                  : getCompanyLogo(job.id) === "/images/3.png"
+                                  ? " bg-blue-500"
+                                  : getCompanyLogo(job.id) === "/images/5.png"
+                                  ? " bg-green-500"
+                                  : getCompanyLogo(job.id) === "/images/7.png"
+                                  ? " bg-gray-800"
+                                  : " bg-gray-400";
                             }
                           }}
                         />
@@ -206,25 +217,31 @@ const Dashboard = () => {
                         {job.is_active && (
                           <span className="inline-flex items-center">
                             <HomeIcon />
-                            <span className="ml-1 text-sm text-gray-600">{job.job_type}</span>
+                            <span className="ml-1 text-sm text-gray-600">
+                              {job.job_type}
+                            </span>
                           </span>
                         )}
                       </div>
-                      
-                      <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-blue-600 font-medium">{"Company name"}</span>
-                        <span className="text-gray-400">|</span>
-                        <span className="text-gray-600 text-sm">Posted: {`${job.created_on}`}</span>
-                      </div>
 
-                      <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>Experience: {job.years_of_experience}</span>
-                        {!job.is_active && (
-                          <div className="flex items-center space-x-1">
-                            <span>{getFlagEmoji(job.location)}</span>
-                            <span>{job.location}</span>
-                          </div>
-                        )}
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="text-blue-600 font-medium">
+                          {job.organization}
+                        </span>
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-600 text-sm">
+                          Posted: {`${formatRelativeTime(job.created_on)}`}
+                        </span>
+
+                        <div className="flex items-center space-x-4 text-sm text-gray-600">
+                          <span>Experience: {job.years_of_experience}</span>
+                          {!job.is_active && (
+                            <div className="flex items-center space-x-1">
+                              <span>{getFlagEmoji(job.location)}</span>
+                              <span>{job.location}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -274,12 +291,26 @@ const Dashboard = () => {
           {jobs.length === 0 && !isLoading && (
             <div className="text-center py-12">
               <div className="text-gray-400 mb-4">
-                <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="mx-auto h-12 w-12"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No jobs found</h3>
-              <p className="text-gray-500">There are no available jobs at the moment.</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No jobs found
+              </h3>
+              <p className="text-gray-500">
+                There are no available jobs at the moment.
+              </p>
             </div>
           )}
         </div>
