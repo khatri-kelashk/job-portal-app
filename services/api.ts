@@ -19,7 +19,7 @@ class ApiService {
     // Add authorization header if token exists
     const token = storage.getToken();
     if (token) {
-      headers.Authorization = `Bearer ${token}`;
+      headers.Authorization = `Token ${token}`;
     }
 
     // Add default headers

@@ -5,7 +5,7 @@ import { apiService } from './api';
 interface JobsQueryParams extends PaginationParams {
   search?: string;
   location?: string;
-  isRemote?: boolean;
+  is_active?: boolean;
 }
 
 class JobsService {

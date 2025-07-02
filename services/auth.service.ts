@@ -1,4 +1,4 @@
-import { LoginCredentials, AuthResponse, User } from '@/types/auth.types';
+import { LoginCredentials, AuthResponse, User, UserData } from '@/types/auth.types';
 import { apiService } from './api';
 
 class AuthService {
@@ -6,8 +6,8 @@ class AuthService {
    * Login user with credentials
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await apiService.post<{ data: AuthResponse }>('/users/login', credentials);
-    return response.data;
+    const response = await apiService.post<{ data: UserData, status : string, token: string, message: string }>('/users/login', credentials);
+    return response;
   }
 
   /**
