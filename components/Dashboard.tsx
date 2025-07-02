@@ -2,12 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pagination, CircularProgress } from '@mui/material';
-import { fetchJobs, setCurrentPage } from '../../store/slices/jobsSlice';
-import { AppDispatch, RootState, useAppSelector } from '../../store';
-import { Job, JobsState } from '../../types/job.types';
+import { fetchJobs, setCurrentPage } from '../store/slices/jobsSlice';
+import { AppDispatch, RootState, useAppSelector } from '../store';
+import { Job, JobsState } from '../types/job.types';
 
 // SVG Icons as components
 const BookmarkIcon = () => (
@@ -53,9 +52,18 @@ const getFlagEmoji = (location: string) => {
   return '';
 };
 
-const Dashboard = () => {
-  const router = useRouter();
+// interface Job {
+//   id: string;
+//   title: string;
+//   company: string;
+//   location: string;
+//   is_active: boolean;
+//   experience: string;
+//   postedTime: string;
+//   logo?: string;
+// }
 
+const Dashboard = () => {
   const dispatch = useDispatch();
   const { 
     jobs, 
@@ -81,7 +89,7 @@ const Dashboard = () => {
   }, []);
 
   const fetchJobsWithFilters = useCallback(
-    (filters?: JobsState['filters']) => {
+    (filters: JobsState['filters']) => {
       dispatch((fetchJobs({ page: currentPage, limit: 10, filters }) as any)).unwrap();
     },
     [dispatch, currentPage]
@@ -89,6 +97,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchJobsWithFilters({});
+    // dispatch((fetchJobs({filters: {search : "", location: ""}, page: currentPage, limit: 10 }) as any)).unwrap();
   }, [dispatch, currentPage]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -129,12 +138,6 @@ const Dashboard = () => {
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Retry
-          </button>
-          <button 
-            onClick={() => router.push('/')}
-            className="mt-4 ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Login
           </button>
         </div>
       </div>

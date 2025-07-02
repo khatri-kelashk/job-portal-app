@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Image from "next/image";
 import { loginUser, clearError } from '../store/slices/authSlice';
-import { AppDispatch, RootState, useAppDispatch, useAppSelector } from '../store';
+import { AppDispatch, RootState, useAppSelector } from '../store';
 
 
 interface ToastState {
@@ -16,7 +16,7 @@ interface ToastState {
 
 const LoginScreen = () => {
   const router = useRouter();
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +47,8 @@ const LoginScreen = () => {
       return;
     }
 
-    const response = await useAppDispatch()(loginUser({ email, password }));
+    // const response = await useAppDispatch()(loginUser({ email, password }));
+    const response = await dispatch((loginUser({ username:email, password }))).unwrap();
     console.log("Login response:", response);
     
     
@@ -87,7 +88,7 @@ const LoginScreen = () => {
           <div className="w-full max-w-md space-y-8">
             <div className="flex justify-center mb-8">
               <Image 
-                src="/logo.png" 
+                src="/images/logo.png" 
                 alt="logoipsum" 
                 width={128}
                 height={32}
@@ -216,7 +217,7 @@ const LoginScreen = () => {
 
         <div className="flex-1 relative">
           <Image 
-            src="/bg.png" 
+            src="/images/bg.png" 
             alt="Background" 
             width={800}
             height={600}
@@ -234,7 +235,7 @@ const LoginScreen = () => {
       <div className="lg:hidden min-h-screen flex flex-col">
         <div className="relative h-64 flex-shrink-0">
           <Image 
-            src="/bg.png" 
+            src="/images/bg.png" 
             alt="Background" 
             width={400}
             height={256}
@@ -252,7 +253,7 @@ const LoginScreen = () => {
           <div className="w-full max-w-sm space-y-6">
             <div className="flex justify-center mb-6">
               <Image 
-                src="/logo.png" 
+                src="/images/logo.png" 
                 alt="logoipsum" 
                 width={128}
                 height={32}
