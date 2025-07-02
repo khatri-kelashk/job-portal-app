@@ -66,7 +66,7 @@ const Dashboard = () => {
     isLoading, 
     error 
   } = useAppSelector((state: RootState) => state.jobs);
-
+  
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const Dashboard = () => {
           
           {/* Jobs List */}
           <div className="space-y-4">
-            {jobs.map((job: Job) => (
+            {jobs?.map((job: Job) => (
               <div
                 key={job.id}
                 onClick={() => handleJobClick(job.id)}
@@ -178,7 +178,7 @@ const Dashboard = () => {
                       <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
                         <Image
                           src={getCompanyLogo(job.id)}
-                          alt={`${job?.title} logo`}
+                          alt={`${job?.job_title} logo`}
                           width={48}
                           height={48}
                           className="w-full h-full object-cover"
@@ -188,7 +188,7 @@ const Dashboard = () => {
                             target.style.display = 'none';
                             const parent = target.parentElement;
                             if (parent) {
-                              parent.innerHTML = `<span class="text-white font-semibold text-lg">${getCompanyLogo(job.id)}</span>`;
+                              parent.innerHTML = `<span class="text-white font-semibold text-lg">${job.organization}</span>`;
                               parent.className += getCompanyLogo(job.id) === 'images/2.png' ? ' bg-red-500' :
                                                 getCompanyLogo(job.id) === 'images/3.png' ? ' bg-blue-500' :
                                                 getCompanyLogo(job.id) === 'images/5.png' ? ' bg-green-500' :
@@ -203,12 +203,12 @@ const Dashboard = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
                         <h3 className="text-lg font-medium text-gray-900 truncate">
-                          {job.title}
+                          {job.job_title}
                         </h3>
                         {job.is_active && (
                           <span className="inline-flex items-center">
                             <HomeIcon />
-                            <span className="ml-1 text-sm text-gray-600">Remote</span>
+                            <span className="ml-1 text-sm text-gray-600">{job.job_type}</span>
                           </span>
                         )}
                       </div>
@@ -216,11 +216,11 @@ const Dashboard = () => {
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-blue-600 font-medium">{"Company name"}</span>
                         <span className="text-gray-400">|</span>
-                        <span className="text-gray-600 text-sm">Posted: {`${job.date_posted}`}</span>
+                        <span className="text-gray-600 text-sm">Posted: {`${job.created_on}`}</span>
                       </div>
 
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>Experience: {job.description}</span>
+                        <span>Experience: {job.years_of_experience}</span>
                         {!job.is_active && (
                           <div className="flex items-center space-x-1">
                             <span>{getFlagEmoji(job.location)}</span>

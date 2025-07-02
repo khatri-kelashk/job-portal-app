@@ -96,7 +96,7 @@ const LoginScreen = () => {
               />
             </div>
 
-            {/* Title */}
+            {/* title */}
             <div className="text-center space-y-2">
               <h1 className="text-3xl font-bold text-slate-800">
                 Join our job portal

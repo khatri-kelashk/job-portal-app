@@ -52,16 +52,6 @@ const getFlagEmoji = (location: string) => {
   return '';
 };
 
-// interface Job {
-//   id: string;
-//   title: string;
-//   company: string;
-//   location: string;
-//   is_active: boolean;
-//   experience: string;
-//   postedTime: string;
-//   logo?: string;
-// }
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -181,7 +171,7 @@ const Dashboard = () => {
                       <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
                         <Image
                           src={getCompanyLogo(job.id)}
-                          alt={`${job?.title} logo`}
+                          alt={`${job?.job_title} logo`}
                           width={48}
                           height={48}
                           className="w-full h-full object-cover"
@@ -206,7 +196,7 @@ const Dashboard = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
                         <h3 className="text-lg font-medium text-gray-900 truncate">
-                          {job.title}
+                          {job.job_title}
                         </h3>
                         {job.is_active && (
                           <span className="inline-flex items-center">
@@ -219,7 +209,7 @@ const Dashboard = () => {
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-blue-600 font-medium">{"Company name"}</span>
                         <span className="text-gray-400">|</span>
-                        <span className="text-gray-600 text-sm">Posted: {`${job.date_posted}`}</span>
+                        <span className="text-gray-600 text-sm">Posted: {`${job.created_on}`}</span>
                       </div>
 
                       <div className="flex items-center space-x-4 text-sm text-gray-600">

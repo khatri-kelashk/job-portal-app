@@ -1,13 +1,17 @@
 export interface Job {
   id: string;
-  title: string;
+  job_title: string;
+  job_type: string;
   location: string;
+  organization: string;
   description: string;
-  date_posted: Date;
+  modified_on: Date;
+  created_on: Date;
   is_active: boolean;
+  years_of_experience: number;
 }
 export interface JobData {
-    jobs: Job[];
+    Jobs: Job[];
 }
 
 export interface JobsResponse {

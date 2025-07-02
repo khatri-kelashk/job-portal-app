@@ -1,4 +1,4 @@
-import { JobsResponse, Job } from '../types/job.types';
+import { JobsResponse, Job, JobData } from '../types/job.types';
 import { PaginationParams } from '../types/api.types';
 import { apiService } from './api';
 
@@ -13,8 +13,8 @@ class JobsService {
    * Get paginated list of jobs
    */
   async getJobs(params: JobsQueryParams): Promise<JobsResponse> {
-    const response = await apiService.get<{ data: JobsResponse }>('/jobs', params);
-    return response.data;
+    const response = await apiService.get<{ data: JobData, status: string, message: string }>('/jobs', params);
+    return response;
   }
 
   /**

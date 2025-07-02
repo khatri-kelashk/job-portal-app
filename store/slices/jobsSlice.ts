@@ -19,7 +19,7 @@ export const fetchJobs = createAsyncThunk(
   'jobs/fetchJobs',
   async (params: PaginationParams & { filters?: JobsState['filters'] }, { rejectWithValue }) => {
     try {
-      const response = await jobsService.getJobs(params);
+      const response = await jobsService.getJobs(params); 
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch jobs');
@@ -52,8 +52,8 @@ const jobsSlice = createSlice({
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.jobs = action?.payload?.data?.jobs;
-        state.totalCount = action?.payload?.totalCount ?? action?.payload?.data?.jobs?.length;
+        state.jobs = action?.payload?.data?.Jobs ?? [];
+        state.totalCount = action?.payload?.totalCount ?? action?.payload?.data?.Jobs.length;
         state.currentPage = action?.payload?.currentPage ?? 0;
         state.totalPages = action?.payload?.totalPages ?? 0;
         state.hasNextPage = action?.payload?.hasNextPage ?? false;
