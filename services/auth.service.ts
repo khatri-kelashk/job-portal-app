@@ -6,7 +6,7 @@ class AuthService {
    * Login user with credentials
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await apiService.post<{ data: AuthResponse }>('/auth/login', credentials);
+    const response = await apiService.post<{ data: AuthResponse }>('/users/login', credentials);
     return response.data;
   }
 
@@ -14,14 +14,14 @@ class AuthService {
    * Logout user
    */
   async logout(): Promise<void> {
-    await apiService.post('/auth/logout');
+    await apiService.post('/users/logout');
   }
 
   /**
    * Verify token and get user info
    */
   async verifyToken(token: string): Promise<User> {
-    const response = await apiService.get<{ data: User }>('/auth/verify');
+    const response = await apiService.get<{ data: User }>('/users/verify');
     return response.data;
   }
 
@@ -29,7 +29,7 @@ class AuthService {
    * Refresh access token
    */
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
-    const response = await apiService.post<{ data: AuthResponse }>('/auth/refresh', {
+    const response = await apiService.post<{ data: AuthResponse }>('/users/refresh', {
       refreshToken,
     });
     return response.data;
@@ -43,7 +43,7 @@ class AuthService {
     email: string;
     password: string;
   }): Promise<AuthResponse> {
-    const response = await apiService.post<{ data: AuthResponse }>('/auth/register', userData);
+    const response = await apiService.post<{ data: AuthResponse }>('/users/register', userData);
     return response.data;
   }
 
@@ -51,14 +51,14 @@ class AuthService {
    * Request password reset
    */
   async requestPasswordReset(email: string): Promise<void> {
-    await apiService.post('/auth/forgot-password', { email });
+    await apiService.post('/users/forgot-password', { email });
   }
 
   /**
    * Reset password with token
    */
   async resetPassword(token: string, newPassword: string): Promise<void> {
-    await apiService.post('/auth/reset-password', { token, password: newPassword });
+    await apiService.post('/users/reset-password', { token, password: newPassword });
   }
 }
 
