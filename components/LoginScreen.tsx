@@ -25,7 +25,7 @@ const LoginScreen = () => {
   const [toast, setToast] = useState<ToastState>({ show: false, title: '', description: '', variant: 'success' });
   
   
-  const { isLoading, error, isAuthenticated,  } = useAppSelector((state: RootState) => state.auth);
+  const { isLoading, isAuthenticated } = useAppSelector((state: RootState) => state.auth);
 
   const showToast = (title: string, description: string, variant: 'success' | 'error' = 'success') => {
     setToast({ show: true, title, description, variant });
@@ -33,6 +33,7 @@ const LoginScreen = () => {
       setToast(prev => ({ ...prev, show: false }));
     }, 3000);
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,15 +48,14 @@ const LoginScreen = () => {
       return;
     }
 
-    // const response = await useAppDispatch()(loginUser({ email, password }));
-    /*const response =*/ await dispatch((loginUser({ username:email, password }))).unwrap();
+    
+    const response = await dispatch((loginUser({ username:email, password }))).unwrap();
     // console.log("Login response:", response);
-    // if (response.status === 'success') {
-    //   showToast("Success", "Logged in successfully!", "success");
-    //   // router.push('/dashboard');
-    // } else {
-    //   showToast("Error", response.message, "error");
-    // }
+    if (response.status === 'success') {
+      showToast("Success", "Logged in successfully!", "success");
+    } else {
+      showToast("Error", response.message, "error");
+    }
   };
   
 

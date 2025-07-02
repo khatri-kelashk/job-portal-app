@@ -7,10 +7,10 @@ import { useDispatch } from 'react-redux';
 import { Pagination, CircularProgress } from '@mui/material';
 import { AppDispatch, RootState, useAppSelector } from '../../store';
 import { fetchJobs, setCurrentPage } from '../../store/slices/jobsSlice';
-import { logoutUser } from '../../store/slices/authSlice';
 import { Job, JobsState } from '../../types/job.types';
 import { PaginationParams } from '../../types/api.types';
 import { formatRelativeTime } from '../../utils/helpers';
+import { storage } from '../../utils/storage';
 
 // SVG Icons as components
 const BookmarkIcon = () => (
@@ -67,6 +67,8 @@ const Dashboard = () => {
     isLoading, 
     error 
   } = useAppSelector((state: RootState) => state.jobs);
+
+  const { isAuthenticated } = useAppSelector((state: RootState) => state.auth);
   
   const [isMobile, setIsMobile] = useState(false);
 
@@ -90,7 +92,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchJobsWithFilters({});
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, fetchJobsWithFilters]);
+  
+    useEffect(() => {
+      if (!isAuthenticated) {
+        router.push('/');
+      }
+    }, [isAuthenticated, router]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(setCurrentPage(value));
@@ -98,8 +106,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     // Handle logout logic here
-    dispatch(logoutUser());
-
+    storage.removeToken();
   };
 
   const handleJobClick = (jobId: string) => {
@@ -151,7 +158,7 @@ const Dashboard = () => {
             <h1 className="text-2xl font-semibold text-blue-900">Job Portal</h1>
             <button
               onClick={handleLogout}
-              className="text-blue-600 hover:text-blue-800 font-medium"
+              className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer"
             >
               Log out
             </button>

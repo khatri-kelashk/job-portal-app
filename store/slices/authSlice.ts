@@ -40,6 +40,7 @@ export const logoutUser = createAsyncThunk(
       // Clear token from localStorage
       storage.removeToken();
     } catch (error: any) {
+      storage.removeToken();
       return rejectWithValue(error.message || 'Logout failed');
     }
   }
