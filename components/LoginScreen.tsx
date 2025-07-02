@@ -1,6 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+// import { useDispatch, useSelector } from 'react-redux';
 import Image from "next/image";
+import { loginUser, clearError } from '../store/slices/authSlice';
+import { AppDispatch, RootState, useAppDispatch, useAppSelector } from '../store';
 
 
 interface ToastState {
@@ -11,12 +15,17 @@ interface ToastState {
 }
 
 const LoginScreen = () => {
+  const router = useRouter();
+  // const dispatch = useDispatch<AppDispatch>();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState<ToastState>({ show: false, title: '', description: '', variant: 'success' });
+  
+  
+  const { isLoading, error, isAuthenticated } = useAppSelector((state: RootState) => state.auth);
 
   const showToast = (title: string, description: string, variant: 'success' | 'error' = 'success') => {
     setToast({ show: true, title, description, variant });
@@ -38,7 +47,9 @@ const LoginScreen = () => {
       return;
     }
 
-    setIsLoading(true);
+    const response = await useAppDispatch()(loginUser({ email, password }));
+    console.log("Login response:", response);
+    
     
     // Simulate API call
     // setTimeout(() => {
@@ -47,6 +58,13 @@ const LoginScreen = () => {
     //   onLogin();
     // }, 1500);
   };
+  
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <div className="min-h-screen bg-white">
