@@ -67,48 +67,49 @@ npm run dev
 
 ### Front-end
 ```
-.
-└── src/
-    ├── assets/
-    │   ├── images
-    │   └── sass/
-    │       ├── _mixins.scss
-    │       ├── _variables.scss
-    │       └── styles.scss
-    ├── components <!--- Commonly used components --->/
-    │   ├── ComponentA/
-    │   │   ├── index.js
-    │   │   ├── ComponentA.jsx
-    │   │   └── _componentA.scss
-    │   └── ComponentB/
-    │       ├── index.js
-    │       ├── ComponentB.jsx
-    │       └── _componentB.scss      
+job-portal-app
+├── app/
+│   ├── assets/
+│       ├── images
+│       └── sass/
+│           ├── _mixins.scss
+│           ├── _variables.scss
+│           └── styles.scss
+├── components <!--- Commonly used components --->/
+│   │   ├── ComponentA/
+│   │   │   ├── index.js
+│   │   │   ├── ComponentA.jsx
+│   │   │   └── _componentA.scss
+│   │   └── ComponentB/
+│   │       ├── index.js
+│   │       ├── ComponentB.jsx
+│   │       └── _componentB.scss      
+├── hooks  
     ├── pages/
-    │   ├── PageA/
-    │   │   ├── PageAComponent.jsx <!--- Independent components --->
-    │   │   ├── PageA.jsx
-    │   │   ├── pageA.scss
-    │   │   └── index.js
-    │   └── PageB/
-    │       ├── PageB.jsx
-    │       ├── pageB.scss
-    │       └── index.js
+│   │   ├── PageA/
+│   │   │   ├── PageAComponent.jsx <!--- Independent components --->
+│   │   │   ├── PageA.jsx
+│   │   │   ├── pageA.scss
+│   │   │   └── index.js
+│   │   └── PageB/
+│   │       ├── PageB.jsx
+│   │       ├── pageB.scss
+│   │       └── index.js
     ├── redux/
-    │   ├── Auth/
-    │   │   └── authSlice.js
-    │   ├── -
-    │   ├── -
-    │   ├── -
-    │   └── store.js
+│   │   ├── Auth/
+│   │   │   └── authSlice.js
+│   │   ├── -
+│   │   ├── -
+│   │   ├── -
+│   │   └── store.js
     ├── routes/
-    │   └── MainRouter.jsx
-    ├── services/
-    │   ├── stripeService.js
-    │   ├── authService.js
-    │   ├── -
-    │   ├── -
-    │   └── -
+│   │   └── MainRouter.jsx
+│   ├── services/
+│   │   ├── stripeService.js
+│   │   ├── authService.js
+│   │   ├── -
+│   │   ├── -
+│   │   └── -
     ├── utils
     └── api.js
 ```
