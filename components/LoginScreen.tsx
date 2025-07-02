@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -66,9 +67,8 @@ const LoginScreen = () => {
         {/* Left Side - Form Section */}
         <div className="flex-1 flex items-center justify-center px-8 py-12 bg-white">
           <div className="w-full max-w-md space-y-8">
-            {/* Logo */}
             <div className="flex justify-center mb-8">
-              <Image
+              <Image 
                 src="/logo.png" 
                 alt="logoipsum" 
                 width={128}
@@ -117,7 +117,7 @@ const LoginScreen = () => {
                   Password
                 </label>
                 <div className="relative">
-                   <Image 
+                  <Image 
                     src="/icons/key.svg" 
                     alt="Password icon" 
                     width={20}
@@ -137,7 +137,7 @@ const LoginScreen = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                     <Image 
+                    <Image 
                       src={showPassword ? "/icons/visibility_off.svg" : "/icons/visibility_on.svg"}
                       alt={showPassword ? "Hide password" : "Show password"}
                       width={20}
@@ -196,11 +196,12 @@ const LoginScreen = () => {
           </div>
         </div>
 
-        {/* Right Side - Background Image Section */}
         <div className="flex-1 relative">
-          <img 
-            src="/lovable-uploads/fb9a2d19-bdcc-48be-880f-895de70179e0.png" 
+          <Image 
+            src="/bg.png" 
             alt="Background" 
+            width={800}
+            height={600}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/20 flex items-end p-12">
@@ -213,11 +214,12 @@ const LoginScreen = () => {
 
       {/* Mobile Layout */}
       <div className="lg:hidden min-h-screen flex flex-col">
-        {/* Top Section - Background Image (Header) */}
         <div className="relative h-64 flex-shrink-0">
-          <img 
-            src="/lovable-uploads/fb9a2d19-bdcc-48be-880f-895de70179e0.png" 
+          <Image 
+            src="/bg.png" 
             alt="Background" 
+            width={400}
+            height={256}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/20 flex items-end p-6">
@@ -230,12 +232,13 @@ const LoginScreen = () => {
         {/* Bottom Section - Form */}
         <div className="flex-1 flex items-center justify-center px-6 py-8 bg-white">
           <div className="w-full max-w-sm space-y-6">
-            {/* Logo */}
             <div className="flex justify-center mb-6">
-              <img 
-                src="/lovable-uploads/5aed1a8b-bbfc-4172-930a-ea8f1aa05c1f.png" 
+              <Image 
+                src="/logo.png" 
                 alt="logoipsum" 
-                className="h-8"
+                width={128}
+                height={32}
+                className="h-8 w-auto"
               />
             </div>
 
