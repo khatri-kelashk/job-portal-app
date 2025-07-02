@@ -243,7 +243,7 @@ const LoginScreen = () => {
           />
           <div className="absolute inset-0 bg-black/20 flex items-end p-6">
             <blockquote className="text-white text-lg font-medium leading-relaxed">
-              "Here, you can find the right fit for your career or hire talent that fits your company's requirements."
+              {"Here, you can find the right fit for your career or hire talent that fits your company's requirements."}
             </blockquote>
           </div>
         </div>
