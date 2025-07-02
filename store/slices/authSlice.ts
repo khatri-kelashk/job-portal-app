@@ -12,6 +12,9 @@ const initialState: AuthState = {
 };
 
 // Async thunks
+/**
+ * Login user
+ */
 export const loginUser = createAsyncThunk(
   '/users/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
@@ -25,10 +28,10 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
 /**
  * Logout user
  */
-
 export const logoutUser = createAsyncThunk(
   '/users/logout',
   async (_, { rejectWithValue }) => {
@@ -45,7 +48,6 @@ export const logoutUser = createAsyncThunk(
 /**
  * Check authentication status : Extra code
  */
-
 export const checkAuthStatus = createAsyncThunk(
   '/users/checkStatus',
   async (_, { rejectWithValue }) => {
@@ -67,7 +69,6 @@ export const checkAuthStatus = createAsyncThunk(
 /**
  * Auth slice
  */
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
