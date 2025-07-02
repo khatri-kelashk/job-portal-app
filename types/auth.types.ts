@@ -2,7 +2,14 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  avatar?: string;
+  phone_no: string;
+  is_active: boolean;
+  role: string;
+  date_joined: Date;
+  last_login: Date;
+}
+export interface UserData {
+    user: User
 }
 
 export interface LoginCredentials {
@@ -11,9 +18,11 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  user: User;
+  status: string;
+  data: UserData;
   token: string;
   refreshToken?: string;
+  message: string;
 }
 
 export interface AuthState {

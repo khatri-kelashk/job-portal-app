@@ -1,29 +1,24 @@
 export interface Job {
   id: string;
   title: string;
-  company: string;
   location: string;
-  type: 'full-time' | 'part-time' | 'contract' | 'freelance';
-  salary?: {
-    min: number;
-    max: number;
-    currency: string;
-  };
   description: string;
-  requirements: string[];
-  postedAt: string;
-  expiresAt?: string;
-  isRemote: boolean;
-  experienceLevel: 'entry' | 'mid' | 'senior' | 'lead';
+  date_posted: Date;
+  is_active: boolean;
+}
+export interface JobData {
+    jobs: Job[];
 }
 
 export interface JobsResponse {
-  jobs: Job[];
-  totalCount: number;
-  currentPage: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
+  status: string;
+  data: JobData;
+  message: string;
+  totalCount?: number;
+  currentPage?: number;
+  totalPages?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
 }
 
 export interface JobsState {
@@ -37,8 +32,6 @@ export interface JobsState {
   error: string | null;
   filters: {
     search?: string;
-    type?: Job['type'];
     location?: string;
-    experienceLevel?: Job['experienceLevel'];
   };
 }
